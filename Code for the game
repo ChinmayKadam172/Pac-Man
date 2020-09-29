@@ -1,0 +1,288 @@
+import turtle
+import os
+import random
+from math import atan, cos, sin, sqrt
+
+wn = turtle.Screen()
+wn.title("Pac-Man")
+wn.bgcolor("black")
+wn.setup(width=800, height=600)
+wn.tracer(0)
+a = 300
+b = 200
+a1 = -300
+b1 = 200
+a2 = 300
+b2 = -200
+a3 = -300
+b3 = -200
+w = 0
+
+ghost = turtle.Turtle()
+ghost.penup()
+ghost.shape("circle")
+ghost.color("red")
+ghost.goto(300, 200)
+
+ghost1 = turtle.Turtle()
+ghost1.penup()
+ghost1.shape("circle")
+ghost1.color("blue")
+ghost1.goto(-300, 200)
+
+ghost2 = turtle.Turtle()
+ghost2.penup()
+ghost2.shape("circle")
+ghost2.color("pink")
+ghost2.goto(300, -200)
+
+ghost3 = turtle.Turtle()
+ghost3.penup()
+ghost3.shape("circle")
+ghost3.color("green")
+ghost3.goto(-300, -200)
+
+square = turtle.Turtle()
+square.penup()
+square.shape("square")
+square.color("pink")
+square.goto(random.randint(-17, 17) * 20, random.randint(-14, 14) * 20)
+square.shapesize(1, 1)
+
+square1 = turtle.Turtle()
+square1.penup()
+square1.shape("square")
+square1.color("red")
+square1.goto(random.randint(-17, 17) * 20, random.randint(-14, 14) * 20)
+
+square2 = turtle.Turtle()
+square2.penup()
+square2.shape("square")
+square2.color("blue")
+square2.goto(random.randint(-17, 17) * 20, random.randint(-14, 14) * 20)
+
+square3 = turtle.Turtle()
+square3.penup()
+square3.shape("square")
+square3.color("white")
+square3.goto(random.randint(-17, 17) * 20, random.randint(-14, 14) * 20)
+
+square4 = turtle.Turtle()
+square4.penup()
+square4.shape("square")
+square4.color("brown")
+square4.goto(random.randint(-17, 17) * 20, random.randint(-14, 14) * 20)
+
+square5 = turtle.Turtle()
+square5.penup()
+square5.shape("square")
+square5.color("green")
+square5.goto(random.randint(-17, 17) * 20, random.randint(-14, 14) * 20)
+
+# Score
+# score_a = 0
+
+
+# Ball
+ball = turtle.Turtle()
+ball.speed(0)
+ball.shape("circle")
+ball.color("yellow")
+ball.penup()
+# ball.goto(0, 0)
+# ball.dx = 0.7
+# ball.dy = 0.7
+
+
+# Pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("circle")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Pac-Man", align="center", font=("Courier", 24, "normal"))
+
+
+# Functions
+def right():
+    x = ball.xcor()
+    x += 20
+    ball.setx(x)
+
+
+def left():
+    x = ball.xcor()
+    x -= 20
+    ball.setx(x)
+
+
+def up():
+    y = ball.ycor()
+    y += 20
+    ball.sety(y)
+
+
+def down():
+    y = ball.ycor()
+    y -= 20
+    ball.sety(y)
+
+
+# Keyboard bindings
+wn.listen()
+wn.onkeypress(left, "Left")
+wn.onkeypress(right, "Right")
+wn.onkeypress(up, "Up")
+wn.onkeypress(down, "Down")
+
+# Main game loop
+while True:
+    wn.update()
+    if (ball.xcor() == square.xcor() or ball.xcor() == square.xcor()) and (
+            ball.ycor() == square.ycor() or ball.ycor() == square.ycor()):
+        square.color("black")
+    if (ball.xcor() == square1.xcor() or ball.xcor() == square1.xcor()) and (
+            ball.ycor() == square1.ycor() or ball.ycor() == square1.ycor()):
+        square1.color("black")
+    if (ball.xcor() == square2.xcor() or ball.xcor() == square2.xcor()) and (
+            ball.ycor() == square2.ycor() or ball.ycor() == square2.ycor()):
+        square2.color("black")
+    if (ball.xcor() == square3.xcor() or ball.xcor() == square3.xcor()) and (
+            ball.ycor() == square3.ycor() or ball.ycor() == square3.ycor()):
+        square3.color("black")
+    if (ball.xcor() == square4.xcor() or ball.xcor() == square4.xcor()) and (
+            ball.ycor() == square4.ycor() or ball.ycor() == square4.ycor()):
+        square4.color("black")
+    if (ball.xcor() == square5.xcor() or ball.xcor() == square5.xcor()) and (
+            ball.ycor() == square5.ycor() or ball.ycor() == square5.ycor()):
+        square5.color("black")
+    adjacent = ball.xcor() - ghost.xcor()
+    opposite = ball.ycor() - ghost.ycor()
+    angle = atan(opposite / adjacent)
+    velocity = 0.5
+
+    adjacent1 = ball.xcor() - ghost1.xcor()
+    opposite1 = ball.ycor() - ghost1.ycor()
+    angle1 = atan(opposite1 / adjacent1)
+
+    adjacent2 = ball.xcor() - ghost2.xcor()
+    opposite2 = ball.ycor() - ghost2.ycor()
+    angle2 = atan(opposite / adjacent)
+
+    adjacent3 = ball.xcor() - ghost3.xcor()
+    opposite3 = ball.ycor() - ghost3.ycor()
+    angle3 = atan(opposite / adjacent)
+
+    if adjacent <= 0 and opposite <= 0:
+        dy = velocity * abs(sin(angle))
+        dx = velocity * abs(cos(angle))
+        a = a - dx
+        b = b - dy
+        ghost.goto(a, b)
+
+    if adjacent <= 0 <= opposite:
+        dy = velocity * abs(sin(angle))
+        dx = velocity * abs(cos(angle))
+        a = a - dx
+        b = b + dy
+        ghost.goto(a, b)
+
+    if adjacent >= 0 >= opposite:
+        dy = velocity * abs(sin(angle))
+        dx = velocity * abs(cos(angle))
+        a = a + dx
+        b = b - dy
+        ghost.goto(a, b)
+
+    if adjacent >= 0 and opposite >= 0:
+        dy = velocity * abs(sin(angle))
+        dx = velocity * abs(cos(angle))
+        a = a + dx
+        b = b + dy
+        ghost.goto(a, b)
+
+    if adjacent1 <= 0 and opposite1 <= 0:
+        dy1 = velocity * abs(sin(angle1))
+        dx1 = velocity * abs(cos(angle1))
+        a1 = a1 - dx1
+        b1 = b1 - dy1
+        ghost1.goto(a1, b1)
+
+    if adjacent1 <= 0 <= opposite1:
+        dy1 = velocity * abs(sin(angle1))
+        dx1 = velocity * abs(cos(angle1))
+        a1 = a1 - dx1
+        b1 = b1 + dy1
+        ghost1.goto(a1, b1)
+
+    if adjacent1 >= 0 >= opposite1:
+        dy1 = velocity * abs(sin(angle1))
+        dx1 = velocity * abs(cos(angle1))
+        a1 = a1 + dx1
+        b1 = b1 - dy1
+        ghost1.goto(a1, b1)
+
+    if adjacent1 >= 0 and opposite1 >= 0:
+        dy1 = velocity * abs(sin(angle1))
+        dx1 = velocity * abs(cos(angle1))
+        a1 = a1 + dx1
+        b1 = b1 + dy1
+        ghost1.goto(a1, b1)
+
+    if adjacent2 <= 0 and opposite2 <= 0:
+        dy2 = velocity * abs(sin(angle2))
+        dx2 = velocity * abs(cos(angle2))
+        a2 = a2 - dx2
+        b2 = b2 - dy2
+        ghost2.goto(a2, b2)
+
+    if adjacent2 <= 0 <= opposite2:
+        dy2 = velocity * abs(sin(angle2))
+        dx2 = velocity * abs(cos(angle2))
+        a2 = a2 - dx2
+        b2 = b2 + dy2
+        ghost2.goto(a2, b2)
+
+    if adjacent2 >= 0 >= opposite2:
+        dy2 = velocity * abs(sin(angle2))
+        dx2 = velocity * abs(cos(angle2))
+        a2 = a2 + dx2
+        b2 = b2 - dy2
+        ghost2.goto(a2, b2)
+
+    if adjacent2 >= 0 and opposite2 >= 0:
+        dy2 = velocity * abs(sin(angle2))
+        dx2 = velocity * abs(cos(angle2))
+        a2 = a2 + dx2
+        b2 = b2 + dy2
+        ghost2.goto(a2, b2)
+
+    if adjacent3 <= 0 and opposite3 <= 0:
+        dy3 = velocity * abs(sin(angle3))
+        dx3 = velocity * abs(cos(angle3))
+        a3 = a3 - dx3
+        b3 = b3 - dy3
+        ghost3.goto(a3, b3)
+
+    if adjacent3 <= 0 <= opposite3:
+        dy3 = velocity * abs(sin(angle3))
+        dx3 = velocity * abs(cos(angle3))
+        a3 = a3 - dx3
+        b3 = b3 + dy3
+        ghost3.goto(a3, b3)
+
+    if adjacent3 >= 0 >= opposite3:
+        dy3 = velocity * abs(sin(angle3))
+        dx3 = velocity * abs(cos(angle3))
+        a3 = a3 + dx3
+        b3 = b3 - dy3
+        ghost3.goto(a3, b3)
+
+    if adjacent3 >= 0 and opposite3 >= 0:
+        dy3 = velocity * abs(sin(angle3))
+        dx3 = velocity * abs(cos(angle3))
+        a3 = a3 + dx3
+        b3 = b3 + dy3
+        ghost3.goto(a3, b3)
